@@ -6,15 +6,15 @@ from .webhook_service import WebhookService
 
 
 class TranslationService:
-    BASE_URL = "https://translation-api-backend.vercel.app/translations/status"
+    BASE_URL = "http://localhost:8000/translations/status/"
     
     @staticmethod
     async def create_translation(request: TranslationRequest) -> JobResponse:
         logger.info("Creating translation for request: %s", request)  
         try:
             response = requests.post(
-                f"{TranslationService.BASE_URL}/",
-                json=request.dict(),
+                f"{TranslationService.BASE_URL}",
+                json=request.model_dump(),
                 timeout=2,
                 headers={"Content-Type": "application/json"},
             )
@@ -29,7 +29,7 @@ class TranslationService:
     async def get_job(job_id: str) -> JobResponse:
         try:
             response = requests.get(
-                f"{TranslationService.BASE_URL}/{job_id}",
+                f"{TranslationService.BASE_URL}{job_id}",
                 timeout=2,
                 headers={"Content-Type": "application/json"},
             )
