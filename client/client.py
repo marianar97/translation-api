@@ -30,9 +30,3 @@ async def get_job(id: str):
     else:
         logger.warning(f"Job with ID: {id} not found")
     return job
-
-
-# if __name__ == '__main__':
-#     logger.info("Starting FastAPI Client Library")
-#     import uvicorn
-#     uvicorn.run(app)

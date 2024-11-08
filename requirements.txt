@@ -1,0 +1,8 @@
+fastapi[standard]
+pydantic
+requests
+uvicorn
+python-dotenv
+pytest
+pytest-asyncio
+python-dotenv

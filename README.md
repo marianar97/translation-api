@@ -13,12 +13,22 @@ A robust FastAPI application that manages translation jobs with webhook notifica
 ## Project Structure
 
 ```
-app/
+client/
+├── __init__.py   
 ├── client.py          # FastAPI application and routes
+├── logger_config.py   # logging configuration
 ├── models.py        # Pydantic models and enums
+├── requirements.txt    
 └── services/
     ├── translation_service.py  # Translation-related operations
     └── webhook_service.py      # Webhook handling and retries
+  
+server/
+├── __init__.py   
+├── jobs.py          # Translation Job Class
+├── models.py        # Pydantic models and enums
+├── server.py        # FastAPI applications and routes
+├── requirements.txt    
 ```
 
 ## Requirements
@@ -50,9 +60,13 @@ pip install -r requirements.txt
 
 ## Running the Application
 ```bash
-python client.py
+uvicorn server:app --host 0.0.0.0 --port 5000
 ```
+in another terminal run
 
+```bash
+uvicorn client:app --host 0.0.0.0 --port 8000
+```
 
 The API will be available at `http://localhost:8000`, and you can access the interactive API documentation at `http://localhost:8000/docs`
 
@@ -103,7 +117,7 @@ The webhook service includes:
 
 ## Configuration
 
-Key configuration values can be found in their respective service files:
+Key configuration values can be found in the .env file for easy configuration:
 
 - `WebhookService`:
   - `MAX_RETRIES = 3`
@@ -120,3 +134,11 @@ The service includes robust error handling for:
 - Translation API communication issues
 - Invalid requests
 - Timeouts
+
+## Integration Tests
+
+```bash
+pytest -vv -s --log-cli-level=INFO .\test_translation_integration.py    
+```
+
+
