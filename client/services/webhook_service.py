@@ -1,13 +1,16 @@
 import asyncio
+import os
+from dotenv import load_dotenv
 from ..logger_config import logger
 import requests
 from ..models import JobResponse
 
+load_dotenv()
 
 class WebhookService:
-    MAX_RETRIES = 3
-    RETRY_DELAY = 5  # seconds
-
+    MAX_RETRIES = int(os.getenv('MAX_RETRIES'))
+    RETRY_DELAY = int(os.getenv('RETRY_DELAY'))
+    
     @staticmethod
     async def send_webhook(job: JobResponse) -> bool:
         payload = {

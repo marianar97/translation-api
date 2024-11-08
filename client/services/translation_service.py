@@ -1,12 +1,15 @@
 import asyncio
+from dotenv import load_dotenv
 from ..logger_config import logger
 import requests
 from ..models import JobResponse, Status, TranslationRequest
 from .webhook_service import WebhookService
+import os
 
+load_dotenv()
 
 class TranslationService:
-    BASE_URL = "http://localhost:8000/translations/status/"
+    BASE_URL = os.getenv('BASE_URL') 
 
     @staticmethod
     async def create_translation(request: TranslationRequest) -> JobResponse:

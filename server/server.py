@@ -2,7 +2,6 @@ import logging
 from typing import List
 from fastapi import FastAPI
 import fastapi
-from fastapi.testclient import TestClient
 from pydantic import UUID4
 from server.models import TranslationRequest, JobResponse
 from server.jobs import TranslationJob
