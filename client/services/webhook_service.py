@@ -19,7 +19,9 @@ class WebhookService:
 
         for attempt in range(WebhookService.MAX_RETRIES):
             try:
-                logger.info("Attempt %d to send webhook for job ID: %s", attempt + 1, job.id)
+                logger.info(
+                    "Attempt %d to send webhook for job ID: %s", attempt + 1, job.id
+                )
                 response = requests.post(
                     job.webhook_url,
                     json=payload,
@@ -31,10 +33,19 @@ class WebhookService:
                     return True
 
             except requests.RequestException as e:
-                logger.error("Webhook attempt %d failed for job ID: %s with error: %s", attempt + 1, job.id, e)
+                logger.error(
+                    "Webhook attempt %d failed for job ID: %s with error: %s",
+                    attempt + 1,
+                    job.id,
+                    e,
+                )
 
             logger.info("Retrying webhook for job ID: %s after delay", job.id)
             await asyncio.sleep(WebhookService.RETRY_DELAY * (2**attempt))
 
-        logger.warning("Failed to send webhook after %d attempts for job ID: %s", WebhookService.MAX_RETRIES, job.id)
+        logger.warning(
+            "Failed to send webhook after %d attempts for job ID: %s",
+            WebhookService.MAX_RETRIES,
+            job.id,
+        )
         return False

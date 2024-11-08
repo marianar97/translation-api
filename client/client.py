@@ -6,19 +6,20 @@ from client.services.translation_service import TranslationService
 app = FastAPI(
     title="Translation API",
     description="API for handling translation jobs",
-    version="1.0.0"
+    version="1.0.0",
 )
+
 
 @app.post("/translations/job", status_code=201)
 async def create_translation_job(
-    request: TranslationRequest, 
-    background_tasks: BackgroundTasks
+    request: TranslationRequest, background_tasks: BackgroundTasks
 ) -> JobResponse:
     job = await TranslationService.create_translation(request)
     logger.info(f"Created translation job with ID: {job.id}")
     background_tasks.add_task(TranslationService.monitor_job_status, job)
     logger.info(f"Background task added to monitor job status for job ID: {job.id}")
     return job
+
 
 @app.get("/translations/job/{id}", status_code=200)
 async def get_job(id: str):
@@ -29,6 +30,7 @@ async def get_job(id: str):
     else:
         logger.warning(f"Job with ID: {id} not found")
     return job
+
 
 # if __name__ == '__main__':
 #     logger.info("Starting FastAPI Client Library")
